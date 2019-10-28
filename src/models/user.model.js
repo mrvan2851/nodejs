@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate');
+const bcrypt = require('bcryptjs');
+
 const UserSchema = mongoose.Schema({
 	name : {
 		type : String,
@@ -23,4 +26,14 @@ const UserSchema = mongoose.Schema({
 		default : Date.now
 	}
 })
+UserSchema.plugin(mongoosePaginate);
+
+UserSchema.methods.comparePassword = (payload)=>{
+	return bcrypt.compareSync(payload, this.password);
+};
+UserSchema.methods.getList = async (payload)=>{
+	let { query = {} , options = {} } = payload
+	return await Model.paginate(query, options);
+}
+
 module.exports = mongoose.model('User' , UserSchema)

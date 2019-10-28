@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../models/user.model')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const  { registerValidationCreateUser }  = require('../helpers/validation')
@@ -46,6 +46,8 @@ module.exports.register = async (req, res)=>{
 		})
 	}
 };
+
+
 /* get list users */
 module.exports.getListUsers = async (req, res)=>{
 	try {

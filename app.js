@@ -12,11 +12,9 @@ mongoose.connect(process.env.DB_CONNECT , { useNewUrlParser: true } , ()=>{
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 require('./src/routers/index.js')(app);
 
-app.get('/', (req , res)=>{
-	res.send('home page')
-})
 
 app.listen(4000 ,()=>{
 	console.log('server is running')

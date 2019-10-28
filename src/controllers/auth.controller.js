@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../models/user.model')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const  { loginValidation }  = require('../helpers/validation')
@@ -25,8 +25,7 @@ module.exports.login = async (req, res)=>{
 		})
 	}
 	
-	const validate  = bcrypt.compareSync(req.body.password, user.password ) 
-	if( !validate ){
+	if( !user.comparePassword(req.body.password) ){
 		return res.status(400).json({
 			message : 'Email & password is wrong'
 		})
@@ -35,4 +34,19 @@ module.exports.login = async (req, res)=>{
 		expiresIn: 86400 // expires in 24 hours
 	})
 	return res.status(200).send({token})
+};
+
+/* get list users */
+module.exports.getCurrentUser = (req, res)=>{
+	User.findById( req.user._id , ['_id' , 'email' ,'name'] , (err, user)=>{
+		if( err ){
+			return res.status(401).json({
+				message : error
+			})
+		}else{
+			return res.status(200).json({
+				data : user
+			})
+		}
+	})
 };
